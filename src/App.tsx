@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -31,8 +31,27 @@ function App() {
     },
   ];
 
+  　// 追加
+  const fetchMovieList = async () => {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/popular?language=ja&page=1`,
+      {
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data.results)
+    return data.results;
+  };
+
+  const [keyword, setKeyword] = useState("");
+
   // 追加
-  const[keyword, setKeyword] = useState("");
+  useEffect(() => {
+    fetchMovieList();
+  }, []);
 
   return (
     <div>
